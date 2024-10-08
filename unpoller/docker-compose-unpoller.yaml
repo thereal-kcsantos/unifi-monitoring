@@ -1,0 +1,54 @@
+version: "3"
+services:
+  influxdb:
+    container_name: up_influxdb
+    restart: unless-stopped
+    image: influxdb:1.8.10
+    ports:
+      - '8086:8086'
+    volumes:
+      - ${INFLUXDB_VOLUME}:/var/lib/influxdb
+#    env_file:
+#      - ./unpoller.env
+    environment:
+      - INFLUXDB_DB=${INFLUXDB_DB}
+      - INFLUXDB_ADMIN_USER=${INFLUXDB_ADMIN_USER}
+      - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_ADMIN_PASSWORD}
+
+  grafana:
+    container_name: up_grafana
+    image: grafana/grafana
+    restart: unless-stopped
+    user: 1000:1000
+    ports:
+      - '3000:3000'
+    volumes:
+      - ${GF_VOLUME}:/var/lib/grafana
+    depends_on:
+      - influxdb
+#    env_file:
+#      - ./unpoller.env
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER}
+      - GF_INSTALL_PLUGINS=${GF_INSTALL_PLUGINS}
+  unifi-poller:
+    container_name: up_poller
+    restart: unless-stopped
+    image: golift/unifi-poller:latest
+    volumes:
+      - ${UP_VOLUME}:/config
+    depends_on:
+      - influxdb
+      - grafana
+#    env_file:
+#      - ./unpoller.env
+    environment:
+      - UP_UNIFI_DEFAULT_USER=${UP_UNIFI_DEFAULT_USER}
+      - UP_UNIFI_DEFAULT_PASS=${UP_UNIFI_DEFAULT_PASS}
+      - UP_UNIFI_DEFAULT_URL=${UP_UNIFI_DEFAULT_URL}
+      - UP_POLLER_DEBUG=false
+      - UP_UNIFI_DEFAULT_SAVE_DPI=true
+      - UP_INFLUXDB_URL=http://influxdb:8086
+      - UP_INFLUXDB_DB=${UP_INFLUXDB_DB}
+      - UP_INFLUXDB_USER=${UP_INFLUXDB_USER}
+      - UP_INFLUXDB_PASS=${UP_INFLUXDB_PASS}

@@ -110,7 +110,7 @@ The default username and password is `admin`/`admin`
 
 `Menu` > `Connections` > `Add new connection` > search `InfluxDB` > `Add new data source`
 - **HTTP** 
-    - `URL`: http://Address-of-Host:8086 (http://192.168.1.10:8086, http://address-of-host.local:8086, etc.
+    - `URL`: http://Address-of-Host:8086 (http://192.168.1.10:8086, http://address-of-host.local:8086, etc.)
     - `Allowed cookies`: server
 - **InfluxDB Details**
     - `Database`: unifi (this should match your "INFLUXDB_DB" variable in your .env file)

@@ -3,12 +3,6 @@ Tools to monitor Unifi Networks.
 
 Featuring Unpoller, Grafana, and InfluxDB. Installed via Docker (Docker Compose). At the time of writing this, this was built on a macOS environment. YMMV if you decide to use install this on a Linux machine
 
-**Required services:**
-Docker (if Mac, Docker Desktop)
-docker compose
-git
-Github CLI tools
-
 ## Environment setup
 
 **Requirements:**
